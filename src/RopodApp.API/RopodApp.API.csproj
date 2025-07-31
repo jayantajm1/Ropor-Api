@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RopodApp.Application\RopodApp.Application.csproj" />
+    <ProjectReference Include="..\RopodApp.Infrastructure\RopodApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\RopodApp.Shared\RopodApp.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

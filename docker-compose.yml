@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ropodapp-sqlserver
+    environment:
+      SA_PASSWORD: "RopodApp123!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - ropodapp-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ropodapp-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ropodapp-network
+
+  api:
+    build:
+      context: .
+      dockerfile: src/RopodApp.API/Dockerfile
+    container_name: ropodapp-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=RopodAppDb;User Id=sa;Password=RopodApp123!;TrustServerCertificate=true
+      - ConnectionStrings__Redis=redis:6379
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+    depends_on:
+      - sqlserver
+      - redis
+    networks:
+      - ropodapp-network
+
+volumes:
+  sqlserver_data:
+  redis_data:
+
+networks:
+  ropodapp-network:
+    driver: bridge
